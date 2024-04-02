@@ -9,7 +9,7 @@ String Escaping and Formatting: Handles string escaping and formatting for safe 
 Output File Generation: Saves generated code to output files for seamless integration into your projects.
 
 Getting Started
-Clone the Repository: Clone this repository to your local machine using git clone https://github.com/yourusername/sql-to-csharp-converter.git.
+Clone the Repository: Clone this repository to your local machine using git clone https://github.com/dorjelama/SQLToCSharpConverter.git.
 Configure: Adjust the regular expressions in the code as needed to match your SQL INSERT statements.
 Run the Program: Compile and run the program to convert your SQL data to C# objects.
 Integrate: Copy the generated C# code into your .NET projects and enjoy seamless integration.
