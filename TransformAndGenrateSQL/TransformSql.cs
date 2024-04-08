@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-
-namespace Automation_Project.TransformAndGenrateSQL
+﻿namespace Automation_Project.TransformAndGenrateSQL
 {
     public class TransformSql
     {
@@ -20,8 +13,8 @@ namespace Automation_Project.TransformAndGenrateSQL
 
             pharmacySQL.Add("SET IDENTITY_INSERT [dbo].[Pharmacy] ON ");
 
-            // Dictionary to store PharmacyName and its corresponding PharmacyId
-            Dictionary<string, int> pharmacyDict = new();
+            // Dictionary to store Supplier_PANORVAT and its corresponding PharmacyId
+            Dictionary<string, int> pharmacyDict = new Dictionary<string, int>();
 
             foreach (string sqlStatement in sqlStatements)
             {
@@ -34,25 +27,25 @@ namespace Automation_Project.TransformAndGenrateSQL
                     // Split values by comma
                     string[] valuesArray = values.Split(',');
 
-                    // Extract PharmacyName and PharmacyId from values
-                    string pharmacyName = valuesArray[2].Trim().Trim('\'');
+                    // Extract Supplier_PANORVAT and PharmacyId from values
+                    string supplierVATorPAN = valuesArray[3].Trim().Trim('\'');
                     int pharmacyId;
 
-                    // Check if PharmacyName already exists in the dictionary
-                    if (!pharmacyDict.ContainsKey(pharmacyName))
+                    // Check if Supplier_PANORVAT already exists in the dictionary
+                    if (!pharmacyDict.ContainsKey(supplierVATorPAN))
                     {
                         // If not, insert it into the Pharmacy table
                         pharmacyId = pharmacyDict.Count + 1;
-                        string pharmacyInsertSQL = $"INSERT INTO Pharmacy (PharmacyId, PharmacyName) VALUES ({pharmacyId}, '{pharmacyName}');";
+                        string pharmacyInsertSQL = $"INSERT INTO Pharmacy (PharmacyId, PharmacyName, SupplierVATorPAN) VALUES ({pharmacyId}, '{valuesArray[2]}', '{supplierVATorPAN}');";
                         pharmacySQL.Add(pharmacyInsertSQL);
 
-                        // Add PharmacyName and PharmacyId to the dictionary
-                        pharmacyDict.Add(pharmacyName, pharmacyId);
+                        // Add Supplier_PANORVAT and PharmacyId to the dictionary
+                        pharmacyDict.Add(supplierVATorPAN, pharmacyId);
                     }
                     else
                     {
-                        // If PharmacyName exists, retrieve its corresponding PharmacyId
-                        pharmacyId = pharmacyDict[pharmacyName];
+                        // If Supplier_PANORVAT exists, retrieve its corresponding PharmacyId
+                        pharmacyId = pharmacyDict[supplierVATorPAN];
                     }
 
                     // Generate SQL for updating PharmacyDetails table
@@ -63,8 +56,8 @@ namespace Automation_Project.TransformAndGenrateSQL
 
             pharmacySQL.Add("SET IDENTITY_INSERT [dbo].[Pharmacy] OFF ");
 
-            File.WriteAllLines("C:\\Users\\someo\\OneDrive\\PREV FILES\\Documents\\Visual Studio 2022\\Automation\\Automation Project\\pharmacy_table.sql", pharmacySQL);
-            File.WriteAllLines("C:\\Users\\someo\\OneDrive\\PREV FILES\\Documents\\Visual Studio 2022\\Automation\\Automation Project\\pharmacy_details_update.sql", pharmacyDetailSQL);
+            File.WriteAllLines("pharmacy_table.sql", pharmacySQL);
+            File.WriteAllLines("pharmacy_details_update.sql", pharmacyDetailSQL);
 
             Console.WriteLine("Transformation complete. Pharmacy table SQL file generated.");
 
