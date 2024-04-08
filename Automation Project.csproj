@@ -8,12 +8,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="outputfile.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="outputfile.txt" />
-  </ItemGroup>
-
 </Project>
